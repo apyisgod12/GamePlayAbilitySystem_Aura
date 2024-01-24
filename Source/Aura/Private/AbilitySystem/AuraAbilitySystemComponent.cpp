@@ -56,7 +56,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
     }
 }
 
-void UAuraAbilitySystemComponent::FForEachAbility(const ::FForEachAbility& Delegate)
+void UAuraAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
 {
     FScopedAbilityListLock ActiveScopeLock(*this);
     for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
@@ -93,6 +93,17 @@ FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 	    }
     }
     return FGameplayTag();
+}
+
+void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+
+    if (!bStartupAbilitiesGiven)
+    {
+        bStartupAbilitiesGiven = true;
+        AbilitiesGivenDelegate.Broadcast(this);
+    }
 }
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,

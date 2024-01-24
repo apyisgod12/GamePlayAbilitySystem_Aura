@@ -95,5 +95,5 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(UAuraAbilitySystemCo
 		Info.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(Info);
 	});
-	AuraAbilitySystemComponent->FForEachAbility(BroadcastDelegate);
+	AuraAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }
