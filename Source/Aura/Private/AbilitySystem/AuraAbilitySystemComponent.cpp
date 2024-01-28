@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/Abilities/AuraGameplayAbilityBase.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/PlayerInterface.h"
@@ -21,11 +22,24 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
         if (const UAuraGameplayAbilityBase* AuraAbility = Cast<UAuraGameplayAbilityBase>(AbilitySpec.Ability))
         {
             AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);
+            AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Equipped);
             GiveAbility(AbilitySpec);
         }
     }
     bStartupAbilitiesGiven = true;
     AbilitiesGivenDelegate.Broadcast();
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+    for (FGameplayTag StatusTag : AbilitySpec.DynamicAbilityTags)
+    {
+	    if (StatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities.Status"))))
+	    {
+            return StatusTag;
+	    }
+    }
+    return FGameplayTag();
 }
 
 void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(
