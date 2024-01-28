@@ -4,7 +4,6 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
-#include "AuraGameplayTags.h"
 #include "AbilitySystem/Abilities/AuraGameplayAbilityBase.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/PlayerInterface.h"
@@ -26,7 +25,7 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
         }
     }
     bStartupAbilitiesGiven = true;
-    AbilitiesGivenDelegate.Broadcast(this);
+    AbilitiesGivenDelegate.Broadcast();
 }
 
 void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(
@@ -140,7 +139,7 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
     if (!bStartupAbilitiesGiven)
     {
         bStartupAbilitiesGiven = true;
-        AbilitiesGivenDelegate.Broadcast(this);
+        AbilitiesGivenDelegate.Broadcast();
     }
 }
 
